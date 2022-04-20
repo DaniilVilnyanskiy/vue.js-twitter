@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue.js twitter</title>
+    <link href="sass/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+<body>
+    <div class="wrapper">
+        <div id="app" class="app"><h1>{{title}}</h1>
+            <form class="app__form" @submit.prevent="onSubmit">
+                <textarea
+                        v-model="item"
+                        required
+                        placeholder="Type tweet here"
+                ></textarea>
+                <button @click="onSubmit" type="submit">Submit</button>
+            </form>
+            <ul class="app__ul">
+                <li v-for="tweet in items" key="tweet.id">
+                    <img :src="tweet.avatar" alt="Аватар">
+                    <span>{{tweet.date}}</span>
+                    <div>{{tweet.body}}</div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+<script src="js/script.js"></script>
+</body>
+</html>
