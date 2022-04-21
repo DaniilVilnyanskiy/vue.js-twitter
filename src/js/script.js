@@ -7,13 +7,13 @@ const app = {
             items: [
                 {
                     id: 1,
-                    body: "hello vue 3",
+                    body: "hello people, this is language of Vue 3",
                     avatar: `https://avatars.dicebear.com/api/miniavs/1.svg`,
                     date: new Date(Date.now()).toLocaleString(),
                 },
                 {
                     id: 2,
-                    body: "hello world",
+                    body: "Hello world!:D",
                     avatar: `https://avatars.dicebear.com/api/miniavs/2.svg`,
                     date: new Date(Date.now()).toLocaleString(),
                 }

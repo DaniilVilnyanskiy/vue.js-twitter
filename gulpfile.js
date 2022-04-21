@@ -4,20 +4,26 @@ let source_folder = "src";   /*папка с исходными файлами*/
 let path = {
     build: {
         html: project_folder + "/",
+        html_parts: project_folder + "/parts/",
+        vue: project_folder + "/",
         sass: project_folder + "/sass/",
         js: project_folder + "/js/",
         img: project_folder + "/img/",
         fonts: project_folder + "/fonts/",
     },
     src: {
-        html: source_folder + "/index.html",
+        html: source_folder + "/index.php",
+        html_parts: source_folder + "/parts/*.html",
+        vue: source_folder + "/**/tweet-form.vue",
         sass: source_folder + "/sass/*.sass",
         js: source_folder + "/js/*.js",
         img: source_folder + "/img/*.{jpg,png,svg,gif,ico,webp,mp4}",
         fonts: source_folder + "/fonts/*.ttf",
     },
     watch: {
-        html: source_folder + "/**/*.html",
+        html: source_folder + "/**/*.php",
+        html_parts: source_folder + "/parts/*.html",
+        vue: source_folder + "/**/tweet-form.vue",
         sass: source_folder + "/sass/*.sass",
         js: source_folder + "/js/*.js",
         img: source_folder + "/img/*.{jpg,png,svg,gif,ico,webp,mp4}",
@@ -44,6 +50,17 @@ function htmlFunc() {
         .pipe(dest(path.build.html))
         .pipe(browserSync.stream())
 }
+function htmlPartsFunc() {
+    return src(path.src.html_parts)
+        .pipe(dest(path.build.html_parts))
+        .pipe(browserSync.stream())
+}
+function vueFunc() {
+    return src(path.src.vue)
+        .pipe(fileinclude())
+        .pipe(dest(path.build.vue))
+        .pipe(browserSync.stream())
+}
 function cssFunc() {
     return src(path.src.sass)
         .pipe(
@@ -60,20 +77,31 @@ function jsFunc() {
         .pipe(dest(path.build.js))
         .pipe(browserSync.stream())
 }
+function img() {
+    return src(path.src.img)
+        .pipe(dest(path.build.img))
+        .pipe(browserSync.stream())
+}
 function watchFiles() {
     gulp.watch([path.watch.html], htmlFunc);
+    gulp.watch([path.watch.html_parts], htmlPartsFunc());
     gulp.watch([path.watch.sass], cssFunc);
     gulp.watch([path.watch.js], jsFunc);
-    /*gulp.watch([path.watch.img], img);*/
+    gulp.watch([path.watch.vue], vueFunc);
+    gulp.watch([path.watch.img], img);
 
 }
 
-let build = gulp.series(htmlFunc, gulp.parallel(cssFunc, jsFunc,/* img*/))
+let build = gulp.series(htmlFunc, htmlPartsFunc, vueFunc, gulp.parallel(cssFunc, jsFunc, img))
 let watch = gulp.parallel(build, watchFiles, browserSyncFunction);
 
+
+exports.img = img;
+exports.vue = vueFunc;
 exports.js = jsFunc;
 exports.css = cssFunc;
 exports.html = htmlFunc;
+exports.html = htmlPartsFunc;
 exports.build = build;
 exports.watch = watch;
 exports.default = watch;
