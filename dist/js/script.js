@@ -21,19 +21,59 @@ const app = {
         };
     },
     methods: {
+
         onSubmit () {
+            let rand = Math.round(Math.random() * 30),
+                avatar = `https://avatars.dicebear.com/api/miniavs/${Date.now()}.svg`,
+                date = new Date(Date.now()).toLocaleString(),
+                body = this.item;
+
             this.items.push({
-                id: Math.round(Math.random() * 30),
-                avatar: `https://avatars.dicebear.com/api/miniavs/${Date.now()}.svg`,
-                body: this.item,
-                date: new Date(Date.now()).toLocaleString(),
+                id: rand,
+                avatar: avatar,
+                body: body,
+                date: date,
             });
+
+            axios.post('../php/check.php', {
+                    id: rand,
+                    avatar: avatar,
+                    body: body,
+                    date: date
+
+            })
+
+                /*.then(function(response) {
+                    console.log(response.body);
+                })*/
+                // .catch(function (error) {
+                //     console.log(error);
+                // });
 
             //reset
             this.item = "";
         }
+
+        /*axios({
+                  method: 'post',
+                  url: 'index.php',
+                  data: {
+                      firstName: 'Fred',
+                      lastName: 'Flintstone'
+                  }
+              })
+        .then(function(response) {
+
+            console.log(response);
+
+        })
+            .catch(function (error) {
+                console.log(error);
+            });*/
     }
 
 }
 
+
 Vue.createApp(app).mount('#app')
+

@@ -5,6 +5,7 @@ let path = {
     build: {
         html: project_folder + "/",
         html_parts: project_folder + "/parts/",
+        php_parts: project_folder + "/php/",
         vue: project_folder + "/",
         sass: project_folder + "/sass/",
         js: project_folder + "/js/",
@@ -14,6 +15,7 @@ let path = {
     src: {
         html: source_folder + "/index.php",
         html_parts: source_folder + "/parts/*.html",
+        php_parts: source_folder + "/php/*.php",
         vue: source_folder + "/**/tweet-form.vue",
         sass: source_folder + "/sass/*.sass",
         js: source_folder + "/js/*.js",
@@ -23,6 +25,7 @@ let path = {
     watch: {
         html: source_folder + "/**/*.php",
         html_parts: source_folder + "/parts/*.html",
+        php_parts: source_folder + "/php/*.php",
         vue: source_folder + "/**/tweet-form.vue",
         sass: source_folder + "/sass/*.sass",
         js: source_folder + "/js/*.js",
@@ -53,6 +56,11 @@ function htmlFunc() {
 function htmlPartsFunc() {
     return src(path.src.html_parts)
         .pipe(dest(path.build.html_parts))
+        .pipe(browserSync.stream())
+}
+function phpPartsFunc() {
+    return src(path.src.php_parts)
+        .pipe(dest(path.build.php_parts))
         .pipe(browserSync.stream())
 }
 function vueFunc() {
@@ -89,10 +97,11 @@ function watchFiles() {
     gulp.watch([path.watch.js], jsFunc);
     gulp.watch([path.watch.vue], vueFunc);
     gulp.watch([path.watch.img], img);
+    gulp.watch([path.watch.php_parts], phpPartsFunc);
 
 }
 
-let build = gulp.series(htmlFunc, htmlPartsFunc, vueFunc, gulp.parallel(cssFunc, jsFunc, img))
+let build = gulp.series(htmlFunc, htmlPartsFunc, vueFunc, phpPartsFunc, gulp.parallel(cssFunc, jsFunc, img))
 let watch = gulp.parallel(build, watchFiles, browserSyncFunction);
 
 
@@ -102,6 +111,7 @@ exports.js = jsFunc;
 exports.css = cssFunc;
 exports.html = htmlFunc;
 exports.html = htmlPartsFunc;
+exports.php = phpPartsFunc;
 exports.build = build;
 exports.watch = watch;
 exports.default = watch;
