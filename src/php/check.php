@@ -9,7 +9,7 @@ $date = $inputJSON['date'];
 
 
 $mysql = new mysqli('localhost', 'root', '', 'twitter-bd');
-$mysql->query("INSERT INTO `tweets` (`idTweet`,`date`, `text`, `img`)
+$mysql->query("INSERT INTO `tweets` (`idTweet`,`date`, `body`, `avatar`)
 VALUES('$id','$date', '$body', '$avatar')");
 
 $mysql->close();

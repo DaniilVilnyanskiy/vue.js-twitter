@@ -1,27 +1,27 @@
 
 const app = {
     data() {
+        axios.get('../php/database.php')
+            .then((response) => {
+                console.log('Тип данных:' + typeof (response.data), response.data);
+
+                // JSON.parse(response.data);
+                this.items = response.data;
+                console.log(response.data.img);
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+
         return {
             title: "Vue.Js Twitter",
             item: "",
             items: [
-                {
-                    id: 1,
-                    body: "hello people, this is language of Vue 3",
-                    avatar: `https://avatars.dicebear.com/api/miniavs/1.svg`,
-                    date: new Date(Date.now()).toLocaleString(),
-                },
-                {
-                    id: 2,
-                    body: "Hello world!:D",
-                    avatar: `https://avatars.dicebear.com/api/miniavs/2.svg`,
-                    date: new Date(Date.now()).toLocaleString(),
-                }
+
             ],
         };
     },
     methods: {
-
         onSubmit () {
             let rand = Math.round(Math.random() * 30),
                 avatar = `https://avatars.dicebear.com/api/miniavs/${Date.now()}.svg`,
@@ -42,38 +42,10 @@ const app = {
                     date: date
 
             })
-
-                /*.then(function(response) {
-                    console.log(response.body);
-                })*/
-                // .catch(function (error) {
-                //     console.log(error);
-                // });
-
-            //reset
             this.item = "";
         }
-
-        /*axios({
-                  method: 'post',
-                  url: 'index.php',
-                  data: {
-                      firstName: 'Fred',
-                      lastName: 'Flintstone'
-                  }
-              })
-        .then(function(response) {
-
-            console.log(response);
-
-        })
-            .catch(function (error) {
-                console.log(error);
-            });*/
     }
-
 }
-
 
 Vue.createApp(app).mount('#app')
 
